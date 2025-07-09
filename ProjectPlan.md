@@ -30,7 +30,7 @@ Questo documento delinea il piano completo per lo sviluppo di un gioco Pac-Man, 
 * Documentazione completa del progetto (Piano di Progetto, SRS IEEE 830, report SonarQube, diagrammi UML tramite Papyrus).
 
 **1.1.4 Team di Progetto e Sintesi**
-* **Sviluppatore Unico:** [Il tuo Nome e Cognome]
+* **Sviluppatore Unico:** Tacuri Rodrigo
 * **Sintesi:** Questo progetto si concentra sullo sviluppo di un clone del classico gioco Pac-Man utilizzando Java Swing, con una forte enfasi sulla documentazione e sull'applicazione delle migliori pratiche di ingegneria del software, adattate per un progetto accademico individuale.
 
 ### 1.2 Modello di Processo: Agile Adattato per Sviluppo Individuale
@@ -107,7 +107,7 @@ Il progetto sarà strutturato in Sprint (iterazioni) di durata variabile (es. 1 
 * **Fornite agli Utenti (Docente/Esaminatori):** Applicazione eseguibile, codice sorgente su GitHub, documentazione completa del progetto, report di SonarQube.
 
 **1.3.2 Ruoli e Responsabilità**
-* **Product Owner / Scrum Master / Sviluppatore / QA / Documentatore:** [Il tuo Nome e Cognome]
+* **Product Owner / Scrum Master / Sviluppatore / QA / Documentatore:** Tacuri Rodrigo
     * Responsabile della prioritizzazione delle funzionalità (tramite GitHub Issues).
     * Responsabile della pianificazione degli Sprint e del monitoraggio del progresso.
     * Responsabile di tutte le attività di progettazione, implementazione e test.
@@ -150,9 +150,7 @@ Il progetto sarà strutturato in Sprint (iterazioni) di durata variabile (es. 1 
 
 ### 1.7 Personale
 
-* **Nome:** [Il tuo Nome e Cognome]
-* **Data Inizio Rapporto:** [Data di Inizio del Progetto]
-* **Data Fine Rapporto:** [Data dell'Esame di Luglio]
+* **Nome:** Tacuri Rodrigo
 * **Competenza e Categorie:** Studente universitario con competenza nella programmazione Java, concetti OOP, fondamenti di Git, familiarità con Eclipse e principi di ingegneria del software. Assumerà tutti i ruoli, inclusi analisi, progettazione, implementazione, test, gestione e documentazione.
 
 ### 1.8 Metodi e Tecniche
