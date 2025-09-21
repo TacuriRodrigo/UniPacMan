@@ -14,8 +14,8 @@ public class  Entità {
 		flag=false;
 		deltaX=0;
 		deltaY=0;
-		this.deltaX=xi;
-		this.deltaY=yi;
+		this.x=xi;
+		this.y=yi;
 	}
 	
 	public void punto_origine(double a, double b) {
@@ -23,7 +23,7 @@ public class  Entità {
 		this.y=b;
 		deltaX=0;
 		deltaY=0;
-	}
+	}	
 	
 	public void setPman(double x, double y) {
 		pacmanX=x;
