@@ -7,6 +7,7 @@ public class  Entità {
 	boolean flag;
 	static double pacmanX;
 	static double pacmanY;
+	public boolean block;
 	
 	//Entita inizia in un posto x e y - iesimo
 	
