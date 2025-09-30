@@ -13,7 +13,7 @@ public class Ghost extends Entità{
 		block = false;
 	}
 	
-	private  void randomMove() {
+	  void randomMove() {
 		
 		//esci dal box
 		if(!startProcess) {
@@ -59,7 +59,7 @@ public class Ghost extends Entità{
 		
 	}
 	
-	private boolean eatPacman() {
+	boolean eatPacman() {
 		return Math.sqrt(Math.pow(this.x-pacmanX, 2 )+Math.pow(this.y-pacmanY, 2))<15;
 	}
 	
@@ -73,7 +73,7 @@ public class Ghost extends Entità{
 	}
 	
 	@SuppressWarnings("unused")
-	private void setDirection(int Tx ,int Ty ,int Sx , int Sy) {
+	 void setDirection(int Tx ,int Ty ,int Sx , int Sy) {
 		//turn left
 		if (Tx<Sx){
 			deltaX=-1; deltaY=0;

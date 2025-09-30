@@ -1,9 +1,12 @@
 package com.universita.pacman.pacman_game;
 
 public class  Entità {
-	protected double x,y;
-	protected double deltaX, deltaY;
-	double Xi,Yi;
+	protected double x;
+	protected double y;
+	protected double deltaX;
+	protected double deltaY;
+	double Yi;
+	double Xi;
 	boolean flag;
 	static double pacmanX;
 	static double pacmanY;
