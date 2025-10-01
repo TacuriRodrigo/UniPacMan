@@ -56,5 +56,12 @@ public class Pacman extends Entità{
 	}
 	
 	/************************/
+	
+	public void move(){
+		super.move();
+		setPman(this.x, this.y);;
+		
+
+}
 
 }
