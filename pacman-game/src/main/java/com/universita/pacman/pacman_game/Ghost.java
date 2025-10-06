@@ -55,7 +55,7 @@ public class Ghost extends Entità{
 		}
 		
 		
-		//super.move();
+		super.move();
 		
 	}
 	
@@ -95,7 +95,7 @@ public class Ghost extends Entità{
 
 		}
 			
-			//super.move();
+			super.move();
 
 	}
 
