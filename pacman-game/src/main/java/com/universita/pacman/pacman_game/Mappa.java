@@ -83,6 +83,5 @@ public class Mappa {
 	public boolean isClear(int i,int j ) {
 		return !(board[i][j]==1);
 	}
-	
 	 
 }
