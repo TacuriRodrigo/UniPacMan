@@ -11,6 +11,7 @@ public class Ghost extends Entità{
 		
 		startProcess=false;
 		block = false;
+		
 	}
 	
 	  void randomMove() {
