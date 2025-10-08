@@ -5,6 +5,8 @@ import java.util.Random;
 public class Ghost extends Entità{
 	
 	public boolean startProcess;
+	  static final double COLLISION_RADIUS = 15.0; // Mettiamo il raggio come costante
+	  public Pacman pacman;
 	
 	public Ghost(double xi,double yi){
 		super(xi,yi);
@@ -59,14 +61,53 @@ public class Ghost extends Entità{
 		super.move();
 		
 	}
+	  
+	  @Override
+	  protected boolean outOfRange() {
+			if (this.x + deltaX < 0 && Yi + 1 != 14 && this instanceof Ghost) {
+				deltaX = 1;
+			}
+			if (this.y + deltaY < 11&& this instanceof Ghost) {
+				Random rnd = new Random();
+				int i = rnd.nextInt(87);
+				i = i % 3;
+				switch (i) {
+				case 0:
+					deltaX = 0;
+					deltaY = 1;
+					break;
+				case 1:
+					deltaX = 1;
+					deltaY = 0;
+					break;
+				case 2:
+					deltaX = -1;
+					deltaY = 0;
+					break;
+				}
+			}
+			return false;
+
+		}
 	
-	boolean eatPacman() {
-		return Math.sqrt(Math.pow(this.x-pacmanX, 2 )+Math.pow(this.y-pacmanY, 2))<15;
-	}
+	// Da aggiungere in Ghost.java
+
+
+
+	  public boolean isCollidingWith(Pacman pacman) {
+	      // Calcola la distanza tra il centro del fantasma e il centro di pacman
+	      double distance = Math.sqrt(
+	          Math.pow(this.x - pacman.getXInd(), 2) + 
+	          Math.pow(this.y - pacman.getYInd(), 2)
+	      );
+	      
+	      // Se la distanza è minore del raggio di collisione, allora si toccano
+	      return distance < COLLISION_RADIUS;
+	  }
 	
 	public void move() {
 		randomMove();
-			if(eatPacman()) {
+			if(isCollidingWith(pacman)) {
 				//this.board.restart();
 				startProcess=false;
 			}

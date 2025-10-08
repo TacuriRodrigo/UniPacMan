@@ -4,7 +4,7 @@ public class Pacman extends Entità{
 	
 	public Pacman(double Xini, double Yini){
 		super (Xini,Yini);
-		setPman(Xini, Yini);
+
 	}
 	
 	public void setSu() {
@@ -59,7 +59,7 @@ public class Pacman extends Entità{
 	
 	public void move(){
 		super.move();
-		setPman(this.x, this.y);;
+		
 		
 
 }
