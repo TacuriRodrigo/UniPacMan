@@ -53,8 +53,8 @@ public class Mappa {
 		lives = 3;
 		mapHeight=416;
 		mapWidth=429;
-		squareHeight=mapHeight/31;
-		squareWidth=mapWidth/28;
+		squareHeight=(double)mapHeight/31;
+		squareWidth=(double)mapWidth/28;
 		
 	}
 	 public	Pacman placePacman() {
@@ -63,6 +63,14 @@ public class Mappa {
 	 
 	public int getMapWidth() {
 		return mapWidth;
+	}
+	
+	public double getsquareHeight(){
+		return squareHeight;
+	}
+	
+	public double getsquareWidth(){
+		return squareWidth;
 	}
 	
 	public int getMapHeight() {
