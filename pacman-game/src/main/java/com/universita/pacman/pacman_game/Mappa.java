@@ -54,7 +54,7 @@ public class Mappa {
 		mapHeight=416;
 		mapWidth=429;
 		squareHeight=mapHeight/31;
-		squareWidth=mapWidth/429;
+		squareWidth=mapWidth/28;
 		
 	}
 	 public	Pacman placePacman() {
