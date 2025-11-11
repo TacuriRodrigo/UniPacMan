@@ -91,5 +91,22 @@ public class Mappa {
 		}
 		return !(board[i][j]==W);
 	}
+	
+	// Metodo per "mangiare" il cibo e restituire se era cibo
+	public boolean eatFood(int riga, int colonna) {
+	    if (board[riga][colonna] == F) { // 'F' è la tua costante per Food
+	        board[riga][colonna] = E; // 'E' è la tua costante per Empty
+	        return true; // Sì, ho mangiato
+	    }
+	    return false; // Non c'era cibo
+	}
+
+	// Metodo di utilità per controllare cosa c'è in una casella
+	public int getTile(int riga, int colonna) {
+	    if (riga < 0 || riga >= board.length || colonna < 0 || colonna >= board[0].length) {
+	        return W; // Se fuori mappa, è un muro
+	    }
+	    return board[riga][colonna];
+	}
 	 
 }

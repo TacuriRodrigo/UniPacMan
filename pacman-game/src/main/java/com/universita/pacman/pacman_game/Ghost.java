@@ -14,57 +14,67 @@ public class Ghost extends Entità {
         block = false;
     }
 
-    // randomMove ora imposta solo la direzione, non chiama super.move()
+ // In Ghost.java
+ // SOSTITUISCI IL TUO randomMove() CON QUESTO:
+
     void randomMove() {
 
-        //esci dal box
-        if (!startProcess) {
-            deltaX = 0;
-            deltaY = -1;
-            // NON modificare x e y direttamente, lascia che 'super.move' lo faccia
-            // this.x = deltaX+x;  <- RIMOSSO
-            // this.y = deltaY+y;  <- RIMOSSO
-            if (this.y <= 140) { // Uso <= per sicurezza
-                startProcess = true;
-            }
-            return; // Ritorna dopo aver impostato la direzione
-        }
+    	// --- OBIETTIVO: Uscire dalla Scatola ---
+    	if (!startProcess) {
+         
+    		// Se 'block' è true, significa che abbiamo sbattuto contro il tetto (riga 12)
+    		// Questo è il nostro segnale per uscire!
+    		if (block) {
+    			block = false;         // Resetta il blocco, abbiamo capito
+    			startProcess = true;   // SIAMO FUORI!
+             
+    			// Ora impostiamo una mossa laterale casuale per andarcene
+    			deltaX = (new Random().nextBoolean()) ? 1 : -1; // 1 (destra) o -1 (sinistra)
+    			deltaY = 0;
+    			return; // Fatto
+    		}
+         
+    		// Se non siamo bloccati, continua a muoverti SU per raggiungere il tetto
+    		deltaX = 0;
+    		deltaY = -1;
+    		return;
+    	}
 
-        if (block) {
-            block = false;
-            // Logica per il numero casuale (Semplificata!)
-            Random rnd = new Random();
-            int i = rnd.nextInt(4); // Genera direttamente un numero tra 0 e 3
-
-            switch (i) {
-                case 0: deltaX = 0; deltaY = -1; break; // SU
-                case 1: deltaX = 0; deltaY = 1; break; // GIÙ
-                case 2: deltaX = -1; deltaY = 0; break; // SINISTRA
-                case 3: deltaX = 1; deltaY = 0; break; // DESTRA
-            }
-        }
-        
-        // La chiamata a super.move() è stata RIMOSSA da qui
+    	// --- OBIETTIVO: Muoversi a Caso (Logica normale) ---
+    	// Questa parte viene eseguita solo se startProcess è true
+    	if (block) {
+    		block = false;
+    		Random rnd = new Random();
+    		int i = rnd.nextInt(4); // Genera direttamente un numero tra 0 e 3
+    		switch (i) {
+             	case 0: deltaX = 0; deltaY = -1; break; // SU
+             	case 1: deltaX = 0; deltaY = 1; break; // GIÙ
+             	case 2: deltaX = -1; deltaY = 0; break; // SINISTRA
+             	case 3: deltaX = 1; deltaY = 0; break; // DESTRA
+    		}
+    	}
     }
 
-    @Override
+    
     // La firma ora accetta Xi e Yi come parametri
-    protected boolean outOfRange(double Xi, double Yi) { 
-        // Ho rimosso 'this instanceof Ghost', non serve, siamo già in Ghost
-        if (this.x + deltaX < 0 && Yi + 1 != 14) {
-            deltaX = 1;
-        }
-        if (this.y + deltaY < 11) {
-            Random rnd = new Random();
-            int i = rnd.nextInt(87); // Lascio la tua logica originale
-            i = i % 3;
-            switch (i) {
-                case 0: deltaX = 0; deltaY = 1; break;
-                case 1: deltaX = 1; deltaY = 0; break;
-                case 2: deltaX = -1; deltaY = 0; break;
-            }
-        }
-        return false;
+    	@Override
+    	// La firma ora accetta int e usa i nomi corretti
+    protected boolean outOfRange(int gridX, int gridY) { 
+    	// Usa i nuovi parametri, non 'Yi'
+    if (this.x + deltaX < 0 && gridY != 14) { // Logica semplificata, 14 è la riga del tunnel
+    	 deltaX = 1;
+     }
+     if (this.y + deltaY < 11) { // Questo controlla l'uscita dalla "scatola"
+         Random rnd = new Random();
+         int i = rnd.nextInt(87); // Lascio la tua logica originale
+         i = i % 3;
+         switch (i) {
+             	case 0: deltaX = 0; deltaY = 1; break;
+             	case 1: deltaX = 1; deltaY = 0; break;
+             	case 2: deltaX = -1; deltaY = 0; break;
+         	}
+     	}
+     	return false;
     }
 
     public boolean isCollidingWith(Pacman pacman) {
