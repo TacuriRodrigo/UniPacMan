@@ -3,12 +3,10 @@ package com.universita.pacman.pacman_game;
 import java.io.IOException;
 
 public class Mappa {
-	private Pacman pacman;
 	final int W=1;	//Muro
 	final int F=2;	//Cibo 
 	final int E=3;	//Vuoto
-	int score;
-	int lives;
+
 	private double squareHeight;
 	private double squareWidth;
 	private int mapHeight;
@@ -49,8 +47,6 @@ public class Mappa {
 	};
 	
 	public Mappa() throws IOException {
-		score=0;
-		lives = 3;
 		mapHeight=416;
 		mapWidth=429;
 		squareHeight=(double)mapHeight/31;
@@ -65,11 +61,11 @@ public class Mappa {
 		return mapWidth;
 	}
 	
-	public double getsquareHeight(){
+	public double getSquareHeight(){
 		return squareHeight;
 	}
 	
-	public double getsquareWidth(){
+	public double getSquareWidth(){
 		return squareWidth;
 	}
 	
@@ -89,7 +85,11 @@ public class Mappa {
 	}
 	
 	public boolean isClear(int i,int j ) {
-		return !(board[i][j]==1);
+		//controllo delle coordinate se sono dentro i limiti dell'array
+		if(i<0 || i>=board.length || j<0 || j>=board[0].length) {
+			return false;
+		}
+		return !(board[i][j]==W);
 	}
 	 
 }

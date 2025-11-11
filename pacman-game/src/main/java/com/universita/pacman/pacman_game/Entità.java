@@ -5,7 +5,6 @@ import java.util.Random;
 public class  Entità {
 	protected double x,y;
 	protected double deltaX, deltaY;
-	double Xi,Yi;
 	boolean flag;
 	
 
@@ -14,7 +13,7 @@ public class  Entità {
 	//Entita inizia in un posto x e y - iesimo
 	
 	public Entità(double xi,double yi) {
-		flag=false;
+		flag=true;
 		deltaX=0;
 		deltaY=0;
 		this.x=xi;
@@ -33,7 +32,7 @@ public class  Entità {
 	
 	
 	
-	public void move() {
+	public void move(Mappa mappa) {
 
 		// Controllo Iniziale del Flag
 		// Se 'flag' è false, significa che la Board (o contesto di gioco) non è stata
@@ -43,21 +42,20 @@ public class  Entità {
 		
 		// --- Calcolo delle Coordinate della Mappa (Grid) ---
 		
-		int mapHeight = 416; // Altezza totale dell'area di gioco in pixel
-		int mapWidth = 429;  // Larghezza totale dell'area di gioco in pixel
-		double squareHeight = mapHeight / 31; // Altezza in pixel di una singola cella della griglia (31 righe)
-		double squareWidth = mapWidth / 28;  // Larghezza in pixel di una singola cella della griglia (28 colonne)
+		
+		double squareHeight = mappa.getSquareHeight(); // Altezza in pixel di una singola cella della griglia (31 righe)
+		double squareWidth = mappa.getSquareWidth();  // Larghezza in pixel di una singola cella della griglia (28 colonne)
 		
 		// Calcola la posizione futura (prossima) dell'entità nel sistema di coordinate della griglia.
 		// `Xi` e `Yi` rappresentano la posizione del *centro* dell'entità nella griglia.
 		// (x + deltaX - squareWidth / 2) è una formula comune per convertire da coordinate pixel a coordinate griglia.
-		Xi = (this.x + deltaX - squareWidth / 2) / squareWidth;
-		Yi = (this.y + deltaY - squareHeight / 2) / squareHeight;
+		double Xi = (this.x + deltaX - squareWidth / 2) / squareWidth;
+		double Yi = (this.y + deltaY - squareHeight / 2) / squareHeight;
 
 		// --- Controlli Pre-Movimento ---
 
 		// Controlla se il movimento porterebbe l'entità fuori dai limiti consentiti.
-		if (outOfRange()) {
+		if (outOfRange(Xi,Yi)) {
 			return; // Se 'outOfRange' è vero (gestito internamente nel metodo) blocca il movimento
 		}
 
@@ -67,23 +65,24 @@ public class  Entità {
 
 		
 		// --- Logica di Movimento e Collisione (Commentata) ---
-		/*	
-		if (board.isClear((int) Yi + 1, (int) Xi + 1)) {
+		
+		int nextGridX=(int) (Xi+1);//calcolo la prossima casella
+		int nextGridY=(int) (Yi+1);//calcola la prossima casella
+			
+		if (mappa.isClear(nextGridX,nextGridY)){
 			// Se la prossima cella (nella Board) è libera:
 			this.x = x + deltaX; // Aggiorna la posizione X
 			this.y = y + deltaY; // Aggiorna la posizione Y
-			if (this instanceof Pacman)
-				board.eat((int) Yi + 1, (int) Xi + 1); // Se è Pac-Man, mangia il punto
 		} else if (this instanceof Ghost) {
 			// Se la cella non è libera e l'entità è un Fantasma:
 			block = true; // Imposta il flag 'block' (come visto in Ghost.randomMove()) per fargli cambiare direzione.
 		}
-		*/
+		
 		// La logica di movimento è *commentata* perché richiede l'implementazione della classe 'Board'.
 		// In assenza della Board, l'entità in realtà non si muove in questo punto del codice.
 	}
 	
-	protected boolean outOfRange() {
+	protected boolean outOfRange(double Xi, double Yi) {
 	    return false;
 	}
 	
@@ -117,6 +116,15 @@ public class  Entità {
 	    this.x = newX;
 	    this.y = newY;
 	}
+	
+    public double getX() {
+    	return this.x;
+    }
+    public double getY() {
+    	return this.y;
+    }
+    
+    
 
 }
 

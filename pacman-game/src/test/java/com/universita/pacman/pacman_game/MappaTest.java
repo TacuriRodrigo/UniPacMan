@@ -30,7 +30,7 @@ class MappaTest {
     void mapDimensionsShouldBeCalculatedCorrectly() {
         // Larghezza: 429px / 28 colonne = 15.32...
         // Altezza: 416px / 31 righe = 13.41...
-        assertTrue(mappa.getsquareWidth() > 15, "La larghezza di una casella non è corretta.");
-        assertTrue(mappa.getsquareHeight() > 13, "L'altezza di una casella non è corretta.");
+        assertTrue(mappa.getSquareWidth() > 15, "La larghezza di una casella non è corretta.");
+        assertTrue(mappa.getSquareHeight() > 13, "L'altezza di una casella non è corretta.");
     }
 }

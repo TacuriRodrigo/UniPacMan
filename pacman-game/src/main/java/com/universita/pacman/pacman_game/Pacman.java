@@ -27,23 +27,8 @@ public class Pacman extends Entità{
 		deltaY=0;
 	}
 	
-	public double getXInd() {
-		return this.x;
-	}
 	
-	public double getYInd() {
-		return this.y;
-	} 
-	
-	public void setXind(double nx) {
-		this.x=nx;
-	}
-	
-	public void setYind(double ny) {
-		this.y=ny;
-	}
-	
-	public void OdeltaXY() {
+	public void stop() {
 		deltaX=0;
 		deltaY=0;
 	}
@@ -57,8 +42,9 @@ public class Pacman extends Entità{
 	
 	/************************/
 	
-	public void move(){
-		super.move();
+	@Override
+	public void move(Mappa mappa){
+		super.move(mappa);
 		
 		
 
