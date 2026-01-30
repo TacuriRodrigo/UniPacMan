@@ -25,59 +25,103 @@ public class Entità {
     }
 
     public void move(Mappa mappa) {
-        // 1. Controllo Flag
-        if (!flag) {
-            return;
-        }
+        if (!flag) return;
 
-        // 2. Ottieni dimensioni
-        double squareHeight = mappa.getSquareHeight();
-        double squareWidth = mappa.getSquareWidth();
+        double tileH = mappa.getSquareHeight();
+        double tileW = mappa.getSquareWidth();
 
-        // 3. Calcola posizione futura in pixel
-        double nextPixelX = this.x + deltaX;
-        double nextPixelY = this.y + deltaY;
+        // Assunzione: x,y sono il CENTRO dell'entità.
+        // Hitbox leggermente più piccola del tile per evitare incastri grafici.
+        double halfW = tileW * 0.40;
+        double halfH = tileH * 0.40;
+        
+     // --- Tunnel wrap (asse X) prima delle collisioni ---
+        int rowNow = (int) Math.floor(y / tileH);
+        double halfTile = tileW / 2.0;
 
-        // 4. Calcola casella futura in griglia (LA FORMULA CORRETTA)
-        // Questa è la conversione standard da pixel a indice di array
-        int nextGridX = (int) (nextPixelX / squareWidth);
-        int nextGridY = (int) (nextPixelY / squareHeight);
+        // Se siamo sulla riga del tunnel
+        if (rowNow == 14 && deltaX !=0) {
+            double nextX = x + deltaX;
 
-        // 5. Gestione Tunnel
-        if (warmAll(nextGridX, nextGridY, mappa)) {
-            return; // Il teletrasporto è avvenuto
-        }
-
-        // 6. Gestione Fuori Limiti (specifica per Ghost)
-        if (outOfRange(nextGridX, nextGridY)) {
-            return;
-        }
-
-        // 7. Controllo Muro
-        // La tua mappa usa (riga, colonna) -> (Y, X)
-        if (mappa.isClear(nextGridY, nextGridX)) {
-            // OK, muovi
-            this.x = nextPixelX;
-            this.y = nextPixelY;
-            
-            if (this instanceof Pacman) {
-                // Nota: qui passiamo la casella in cui ci siamo APPENA SPOSTATI
-                // (nextGridY, nextGridX)
-                mappa.eatFood(nextGridY, nextGridX);
+            // Se oltrepassi a sinistra -> vai a destra
+            if (nextX - halfW <0 ) {
+                x = mappa.getMapWidth() - halfTile;
+                return;
             }
-            
-        } else if (this instanceof Ghost) {
-            // Muro e sei un Fantasma
-            block = true; // Segnala al fantasma di cambiare direzione
+
+            // Se oltrepassi a destra -> vai a sinistra
+            if (nextX + halfW > mappa.getMapWidth() ) {
+                x = halfTile;
+                return;
+            }
         }
-        // Se sei Pacman e c'è un muro, non fai nulla (non ti muovi)
+
+
+        // ---- 1) Prova movimento su X ----
+        double nextX = x + deltaX;
+        if (!collidesWithWall(nextX, y, halfW, halfH, mappa, tileW, tileH)) {
+            x = nextX;
+        } else if (this instanceof Ghost) {
+            block = true;
+        }
+
+        // ---- 2) Prova movimento su Y ----
+        double nextY = y + deltaY;
+        if (!collidesWithWall(x, nextY, halfW, halfH, mappa, tileW, tileH)) {
+            y = nextY;
+        } else if (this instanceof Ghost) {
+            block = true;
+        }
+
+
+
+        /*if (warmAll(gridX, gridY, mappa)) return;*/
+
+        // Eat food: usa la cella del centro (ok)
+        if (this instanceof Pacman) {
+        	int pacCol = (int) Math.floor(x / tileW);
+        	int pacRow = (int) Math.floor(y / tileH);
+
+            mappa.eatFood(pacRow, pacCol);
+        }
     }
+
+    private boolean collidesWithWall(
+            double cx, double cy,
+            double halfW, double halfH,
+            Mappa mappa,
+            double tileW, double tileH
+    ) {
+        // 4 angoli della hitbox
+        double left = cx - halfW;
+        double right = cx + halfW;
+        double top = cy - halfH;
+        double bottom = cy + halfH;
+
+        int leftCol   = (int) Math.floor(left / tileW);
+        int rightCol  = (int) Math.floor(right / tileW);
+        int topRow    = (int) Math.floor(top / tileH);
+        int bottomRow = (int) Math.floor(bottom / tileH);
+
+
+        // Se qualunque cella toccata è muro -> collisione
+        // isClear(row, col) => true se non muro
+        if (!mappa.isClear(topRow, leftCol)) return true;
+        if (!mappa.isClear(topRow, rightCol)) return true;
+        if (!mappa.isClear(bottomRow, leftCol)) return true;
+        if (!mappa.isClear(bottomRow, rightCol)) return true;
+
+        return false;
+    }
+
 
     /**
      * CORREZIONE 1: La firma deve accettare int.
      * Questo è il metodo "base" per Entita (non fa nulla).
      * Sarà sovrascritto da Ghost.
      */
+    
+    
     protected boolean outOfRange(int gridX, int gridY) {
         return false;
     }
@@ -86,24 +130,28 @@ public class Entità {
      * CORREZIONE 2: La firma è cambiata per passare la mappa (per le coordinate di teletrasporto)
      * CORREZIONE 3: Il corpo del metodo ora usa i parametri gridX e gridY, NON Xi.
      */
+    
+    /*
     private boolean warmAll(int gridX, int gridY, Mappa mappa) {
-        boolean ans = false;
-
-        // Logica Semplificata: Se siamo sulla riga 14 E all'estrema sinistra o destra
+        // Se siamo sulla riga 14 e usciamo a sinistra/destra
         if (gridY == 14 && (gridX <= 0 || gridX >= 27)) {
 
-            if (gridX >= 27) { // Se all'estrema destra
-                // Teletrasporta all'inizio della mappa a sinistra
-                this.x = 0; 
-            } else { // Se all'estrema sinistra
-                // Teletrasporta alla fine della mappa a destra
-                this.x = mappa.getMapWidth() - mappa.getSquareWidth(); 
+            double halfTile = mappa.getSquareWidth() / 2.0;
+
+            if (gridX >= 27) { 
+                // Uscito a DESTRA -> rientra a SINISTRA
+                this.x = halfTile;
+            } else { 
+                // Uscito a SINISTRA -> rientra a DESTRA
+                this.x = mappa.getMapWidth() - halfTile;
             }
-            
-            ans = true; // Teletrasporto avvenuto
+
+            return true;
         }
-        return ans;
+        return false;
     }
+    */
+
 
     public void setPosition(double newX, double newY) {
         this.x = newX;

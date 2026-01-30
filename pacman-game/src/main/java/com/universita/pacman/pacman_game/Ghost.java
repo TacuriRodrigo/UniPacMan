@@ -5,20 +5,32 @@ import java.util.Random;
 public class Ghost extends Entità {
 
     public boolean startProcess;
-    static final double COLLISION_RADIUS = 15.0;
-    // La variabile 'public Pacman pacman;' è stata RIMOSSA
+
+    private final Random rnd;
 
     public Ghost(double xi, double yi) {
-        super(xi, yi);
+        this(xi,yi,new Random());
+    }
+    
+    public Ghost(double xi, double yi, Random rnd) {
+    	super(xi, yi);
+        this.rnd = rnd;
         startProcess = false;
         block = false;
+        
+        deltaX=1;
+        deltaY=0;
     }
 
  // In Ghost.java
  // SOSTITUISCI IL TUO randomMove() CON QUESTO:
 
-    void randomMove() {
+    protected void randomMove() {
 
+        if (deltaX == 0 && deltaY == 0) {
+            deltaX = 1;
+            deltaY = 0;
+        }
     	// --- OBIETTIVO: Uscire dalla Scatola ---
     	if (!startProcess) {
          
@@ -29,7 +41,7 @@ public class Ghost extends Entità {
     			startProcess = true;   // SIAMO FUORI!
              
     			// Ora impostiamo una mossa laterale casuale per andarcene
-    			deltaX = (new Random().nextBoolean()) ? 1 : -1; // 1 (destra) o -1 (sinistra)
+    			deltaX = (rnd.nextBoolean()) ? 1 : -1; // 1 (destra) o -1 (sinistra)
     			deltaY = 0;
     			return; // Fatto
     		}
@@ -44,7 +56,6 @@ public class Ghost extends Entità {
     	// Questa parte viene eseguita solo se startProcess è true
     	if (block) {
     		block = false;
-    		Random rnd = new Random();
     		int i = rnd.nextInt(4); // Genera direttamente un numero tra 0 e 3
     		switch (i) {
              	case 0: deltaX = 0; deltaY = -1; break; // SU
@@ -56,36 +67,38 @@ public class Ghost extends Entità {
     }
 
     
-    // La firma ora accetta Xi e Yi come parametri
-    	@Override
-    	// La firma ora accetta int e usa i nomi corretti
-    protected boolean outOfRange(int gridX, int gridY) { 
-    	// Usa i nuovi parametri, non 'Yi'
-    if (this.x + deltaX < 0 && gridY != 14) { // Logica semplificata, 14 è la riga del tunnel
-    	 deltaX = 1;
-     }
-     if (this.y + deltaY < 11) { // Questo controlla l'uscita dalla "scatola"
-         Random rnd = new Random();
-         int i = rnd.nextInt(87); // Lascio la tua logica originale
-         i = i % 3;
-         switch (i) {
-             	case 0: deltaX = 0; deltaY = 1; break;
-             	case 1: deltaX = 1; deltaY = 0; break;
-             	case 2: deltaX = -1; deltaY = 0; break;
-         	}
-     	}
-     	return false;
+    @Override
+    protected boolean outOfRange(int gridX, int gridY) {
+        // Esempio: se non sei nella riga tunnel, evita di uscire a sinistra fuori mappa
+        if (gridX < 0 && gridY != 14) {
+            deltaX = 1; 
+            deltaY = 0;
+            return true; // ho gestito io, non continuare
+        }
+
+        // Logica "scatola": se sei sopra una certa riga, scegli una direzione per rientrare/uscire
+        // Qui 11 deve essere una RIGA, non pixel
+        if (gridY < 11) {
+            int i = rnd.nextInt(3);
+            switch (i) {
+                case 0: deltaX = 0; deltaY = 1; break;
+                case 1: deltaX = 1; deltaY = 0; break;
+                case 2: deltaX = -1; deltaY = 0; break;
+            }
+            return true;
+        }
+
+        return false;
     }
 
-    public boolean isCollidingWith(Pacman pacman) {
-        // Calcola la distanza tra il centro del fantasma e il centro di pacman
-        double distance = Math.sqrt(
-            // Usa i nuovi metodi getX() e getY() ereditati da Entita
-            Math.pow(this.x - pacman.getX(), 2) +
-            Math.pow(this.y - pacman.getY(), 2)
-        );
 
-        return distance < COLLISION_RADIUS;
+    public boolean isCollidingWith(Pacman pacman, Mappa mappa) {
+        double dx = this.x - pacman.getX();
+        double dy = this.y - pacman.getY();
+        double distance = Math.sqrt(dx*dx + dy*dy);
+
+        double radius = mappa.getSquareWidth() * 0.45; // circa metà tile
+        return distance < radius;
     }
 
     // La firma ora accetta anche Pacman
@@ -94,11 +107,17 @@ public class Ghost extends Entità {
         randomMove();
         
         // 2. Controlla la collisione
-        if (isCollidingWith(pacman)) {
+        if (isCollidingWith(pacman,mappa)) {
             startProcess = false;
         }
         
         // 3. Esegui la mossa (usando la logica di Entita)
+        super.move(mappa);
+    }
+    
+    @Override
+    public void move(Mappa mappa) {
+        randomMove();
         super.move(mappa);
     }
 
@@ -123,6 +142,11 @@ public class Ghost extends Entità {
         
         // La chiamata a super.move() è stata RIMOSSA anche da qui
     }
+    
+    void moveWithoutAI(Mappa mappa) {
+        super.move(mappa);
+    }
+
     
 
 }
