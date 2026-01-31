@@ -1,4 +1,6 @@
-package com.universita.pacman.pacman_game;
+package com.universita.pacman;
+
+import com.universita.pacman.view.GameFrame;
 
 /**
  * Hello world!

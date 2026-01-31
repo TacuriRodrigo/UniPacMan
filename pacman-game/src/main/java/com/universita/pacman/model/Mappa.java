@@ -1,4 +1,4 @@
-package com.universita.pacman.pacman_game;
+package com.universita.pacman.model;
 
 import java.io.IOException;
 

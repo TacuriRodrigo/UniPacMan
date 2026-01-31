@@ -1,4 +1,4 @@
-package com.universita.pacman.pacman_game;
+package com.universita.pacman.model;
 
 // java.util.Random non è più usato qui, sarà usato in Ghost.java
 // import java.util.Random; 
