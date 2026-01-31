@@ -5,6 +5,8 @@ import java.util.Random;
 public class Ghost extends Entità {
 
     public boolean startProcess;
+    private static final double SPEED = 1.6;
+
 
     private final Random rnd;
 
@@ -22,13 +24,11 @@ public class Ghost extends Entità {
         deltaY=0;
     }
 
- // In Ghost.java
- // SOSTITUISCI IL TUO randomMove() CON QUESTO:
-
+    
     protected void randomMove() {
 
         if (deltaX == 0 && deltaY == 0) {
-            deltaX = 1;
+            deltaX = SPEED;
             deltaY = 0;
         }
     	// --- OBIETTIVO: Uscire dalla Scatola ---
@@ -41,14 +41,14 @@ public class Ghost extends Entità {
     			startProcess = true;   // SIAMO FUORI!
              
     			// Ora impostiamo una mossa laterale casuale per andarcene
-    			deltaX = (rnd.nextBoolean()) ? 1 : -1; // 1 (destra) o -1 (sinistra)
+    			deltaX = (rnd.nextBoolean()) ? SPEED : -SPEED; // 1 (destra) o -1 (sinistra)
     			deltaY = 0;
     			return; // Fatto
     		}
          
     		// Se non siamo bloccati, continua a muoverti SU per raggiungere il tetto
     		deltaX = 0;
-    		deltaY = -1;
+    		deltaY = -SPEED;
     		return;
     	}
 
@@ -58,10 +58,10 @@ public class Ghost extends Entità {
     		block = false;
     		int i = rnd.nextInt(4); // Genera direttamente un numero tra 0 e 3
     		switch (i) {
-             	case 0: deltaX = 0; deltaY = -1; break; // SU
-             	case 1: deltaX = 0; deltaY = 1; break; // GIÙ
-             	case 2: deltaX = -1; deltaY = 0; break; // SINISTRA
-             	case 3: deltaX = 1; deltaY = 0; break; // DESTRA
+             	case 0: deltaX = 0; deltaY = -SPEED; break; // SU
+             	case 1: deltaX = 0; deltaY = SPEED; break; // GIÙ
+             	case 2: deltaX = -SPEED; deltaY = 0; break; // SINISTRA
+             	case 3: deltaX = SPEED; deltaY = 0; break; // DESTRA
     		}
     	}
     }
