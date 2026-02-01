@@ -202,12 +202,68 @@ Questa collaborazione ha contribuito a migliorare la qualità del codice e a rid
 
 ## 3. Requisiti
 
-Questa sezione descrive i requisiti del sistema.
+### 3.1 Requirements Engineering
 
-### 3.1 Requisiti Funzionali
+La fase di requirements engineering è stata affrontata in modo incrementale e flessibile.  
+In una prima fase sono stati individuati i requisiti fondamentali del sistema, successivamente raffinati e prioritizzati durante lo sviluppo.
 
+Per la prioritizzazione dei requisiti è stato adottato il metodo **MoSCoW**, che ha permesso di distinguere le funzionalità essenziali da quelle opzionali, concentrando lo sviluppo sugli aspetti più critici del gioco.
 
-### 3.2 Requisiti Non Funzionali
+| Categoria | Requisiti | Stato di Implementazione |
+|---------|-----------|--------------------------|
+| **Must Have** | Movimento di Pacman, mappa funzionante, muri, cibo, collisioni, fantasmi, punteggio, vite | Implementati |
+| **Should Have** | High Score, schermata iniziale, Game Over, restart della partita | Implementati |
+| **Could Have** | Animazioni avanzate, AI più complessa per i fantasmi | Parzialmente / Non implementati |
+| **Won’t Have** | Multiplayer, suoni avanzati | Non implementati |
+
+Questa classificazione ha guidato le decisioni durante lo sviluppo, consentendo di completare prima le funzionalità indispensabili.
+
+---
+
+### 3.2 Requisiti Funzionali e Non Funzionali
+
+I requisiti del sistema sono stati suddivisi in **requisiti funzionali** e **requisiti non funzionali**.
+
+I requisiti funzionali descrivono cosa il sistema deve fare, tra cui:
+- controllo del movimento di Pacman
+- gestione della mappa e delle collisioni
+- movimento autonomo dei fantasmi
+- gestione del punteggio, delle vite e dell’High Score
+- gestione del Game Over e del riavvio della partita
+
+I requisiti non funzionali definiscono invece i vincoli qualitativi del sistema, tra cui:
+- utilizzo del linguaggio Java e della libreria Swing
+- architettura modulare e separazione tra logica e grafica
+- fluidità del gioco e stabilità dell’esecuzione
+- manutenibilità ed estendibilità del codice
+
+Il dettaglio completo dei requisiti funzionali e non funzionali è descritto nel documento **SpecificaRequisiti.md**.
+
+---
+
+### 3.3 Operational Quality
+
+La qualità operativa del sistema è stata valutata facendo riferimento al **modello di qualità di McCall**, che individua diversi fattori rilevanti per il software.
+
+In particolare, il progetto UNIPACMAN garantisce:
+
+- **Correttezza e Affidabilità**  
+  Il sistema implementa correttamente le regole di gioco e mantiene un comportamento stabile durante l’esecuzione, evitando crash o stati inconsistenti.
+
+- **Usabilità**  
+  L’interfaccia è semplice e intuitiva. I controlli sono immediati e il movimento di Pacman è reso più fluido grazie al sistema di assistenza alle curve, riducendo la frustrazione dell’utente.
+
+- **Efficienza**  
+  Il gioco utilizza un game loop basato su `Timer` con aggiornamenti regolari, garantendo un frame rate stabile e un utilizzo contenuto delle risorse.
+
+- **Manutenibilità**  
+  La separazione tra model e view e l’organizzazione modulare del codice facilitano la comprensione e la modifica del sistema.
+
+- **Testabilità**  
+  La logica di gioco è indipendente dalla grafica, permettendo l’uso di test automatici tramite JUnit per verificare le funzionalità principali.
+
+Nel complesso, il progetto soddisfa i principali criteri di qualità operativa richiesti per un software di questo tipo.
+
 
 
 ---
