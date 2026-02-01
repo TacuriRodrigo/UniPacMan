@@ -1,140 +1,131 @@
 # Casi di Test
 
-Questo documento descrive i principali casi di test utilizzati per verificare la correttezza della logica del progetto **UNIPACMAN**.  
-I test sono stati implementati con **JUnit** ed eseguiti tramite `mvn test`.
+Questo documento descrive i casi di test implementati per verificare la correttezza della logica del progetto **UNIPACMAN**.  
+I test sono stati sviluppati utilizzando **JUnit 5** ed eseguiti tramite **Maven**.
 
-Ogni caso di test verifica una funzionalità specifica del gioco, in modo da individuare rapidamente eventuali errori nella logica.
+Ogni test verifica una funzionalità specifica del gioco, garantendo l’affidabilità del sistema.
 
 
-## CT1 – Spawn di Pacman in una cella valida
 
-**Obiettivo:** verificare che Pacman venga generato in una posizione attraversabile (non un muro).  
-**Precondizioni:** mappa inizializzata.  
+## CT1 – Verifica della correttezza della Mappa  
+**Classe di test:** `MappaSanityTest`
+
+**Obiettivo:** verificare che la mappa di gioco sia correttamente inizializzata.  
+
 **Azioni:**
-1. Creare una nuova `Mappa`.
-2. Generare Pacman con `placePacman()`.
-3. Convertire la posizione `(x, y)` in coordinate griglia `(riga, colonna)`.
-4. Verificare che la cella corrispondente non sia un muro.
+- Creazione di una nuova istanza di `Mappa`.
+- Verifica delle dimensioni della mappa.
+- Verifica della validità dei tile.
 
-**Risultato atteso:** Pacman deve spawnare su una cella libera (tile != muro).
+**Risultato atteso:**  
+La mappa deve essere coerente, con dimensioni corrette e senza errori strutturali.
 
 
-## CT2 – Collisione Pacman contro muro
 
-**Obiettivo:** verificare che Pacman non attraversi i muri.  
-**Precondizioni:** Pacman posizionato vicino ad un muro.  
+## CT2 – Spawn di Pacman in posizione valida  
+**Classe di test:** `PacmanSpawnTest`
+
+**Obiettivo:** verificare che Pacman venga generato in una cella attraversabile.  
+
 **Azioni:**
-1. Impostare la direzione verso il muro (es. destra).
-2. Eseguire più tick di movimento (`move(mappa)`).
-3. Confrontare la posizione prima e dopo.
+- Creazione della mappa.
+- Generazione di Pacman tramite `placePacman()`.
+- Conversione delle coordinate `(x, y)` in riga e colonna.
+- Verifica che il tile di spawn non sia un muro.
 
-**Risultato atteso:** la posizione non deve oltrepassare il muro (Pacman si ferma).
+**Risultato atteso:**  
+Pacman deve spawnare su una cella libera della mappa.
 
 
-## CT3 – Raccolta del cibo (Food)
 
-**Obiettivo:** verificare che quando Pacman passa su una cella con cibo, questo venga rimosso.  
-**Precondizioni:** Pacman sopra una cella con tile `Food`.  
+## CT3 – Collisione di Pacman con i muri  
+**Classe di test:** `PacmanWallCollisionTest`
+
+**Obiettivo:** verificare che Pacman non possa attraversare i muri.  
+
 **Azioni:**
-1. Portare Pacman su una cella con `F`.
-2. Chiamare `move(mappa)` o direttamente `eatFood(r, c)` in base alla logica.
-3. Controllare che il tile cambi da `F` a `E`.
+- Posizionamento di Pacman vicino ad un muro.
+- Impostazione del movimento verso il muro.
+- Esecuzione di più tick di movimento.
 
-**Risultato atteso:** il cibo viene mangiato e scompare dalla mappa.
+**Risultato atteso:**  
+Pacman deve fermarsi prima del muro senza oltrepassarlo.
 
 
-## CT4 – Incremento del punteggio
 
-**Obiettivo:** verificare che il punteggio aumenti quando Pacman mangia il cibo.  
-**Precondizioni:** punteggio iniziale noto.  
+## CT4 – Raccolta del cibo  
+**Classe di test:** `EatFoodTest`
+
+**Obiettivo:** verificare che il cibo venga correttamente consumato da Pacman.  
+
 **Azioni:**
-1. Leggere `score` iniziale.
-2. Far mangiare almeno un pallino a Pacman.
-3. Leggere `score` finale.
+- Posizionamento di Pacman su una cella contenente cibo.
+- Esecuzione del movimento.
+- Controllo del valore del tile dopo il passaggio.
 
-**Risultato atteso:** `score` aumenta del valore previsto (es. +10 per pallino).
+**Risultato atteso:**  
+Il tile deve passare da `Food` a `Empty`.
 
 
-## CT5 – Tunnel laterale (wrap)
 
-**Obiettivo:** verificare che attraversando il tunnel Pacman rientri dal lato opposto della mappa.  
-**Precondizioni:** Pacman posizionato sulla riga del tunnel.  
+## CT5 – Funzionamento del tunnel laterale  
+**Classe di test:** `TunnelTest`
+
+**Obiettivo:** verificare il corretto funzionamento del tunnel laterale.  
+
 **Azioni:**
-1. Posizionare Pacman vicino al bordo sinistro sulla riga del tunnel.
-2. Impostare direzione sinistra.
-3. Eseguire tick di movimento fino a superare il bordo.
+- Posizionamento di Pacman sulla riga del tunnel.
+- Movimento verso il bordo sinistro o destro.
+- Esecuzione di più tick di movimento.
 
-**Risultato atteso:** Pacman deve comparire dal lato destro della mappa (wrap completato).
+**Risultato atteso:**  
+Pacman deve riapparire dal lato opposto della mappa.
 
 
-## CT6 – Gate della ghost house
 
-**Obiettivo:** verificare che Pacman non possa attraversare il gate mentre i Ghost sì.  
-**Precondizioni:** esistenza del tile `Gate` (valore dedicato).  
+## CT6 – Collisione dei Ghost con i muri  
+**Classe di test:** `GhostWallCollisionTest`
+
+**Obiettivo:** verificare che i Ghost riconoscano la collisione con i muri.  
+
 **Azioni:**
-1. Verificare che `isClearForPacman(r, c)` sul gate ritorni `false`.
-2. Verificare che `isClearForGhost(r, c)` sul gate ritorni `true`.
+- Posizionamento di un Ghost vicino ad un muro.
+- Movimento verso il muro.
+- Esecuzione della logica di movimento.
 
-**Risultato atteso:** gate bloccante per Pacman, attraversabile per Ghost.
+**Risultato atteso:**  
+Il Ghost non deve attraversare il muro e deve attivare la logica di cambio direzione.
 
 
-## CT7 – Collisione Ghost contro muro (block)
 
-**Obiettivo:** verificare che i Ghost riconoscano l’impatto con un muro e reagiscano cambiando direzione.  
-**Precondizioni:** Ghost vicino ad un muro.  
+## CT7 – Collisione Pacman–Ghost  
+**Classe di test:** `GhostPacmanCollisionTest`
+
+**Obiettivo:** verificare il rilevamento della collisione tra Pacman e un Ghost.  
+
 **Azioni:**
-1. Impostare un movimento verso un muro.
-2. Eseguire `move(mappa)` del ghost.
-3. Verificare che la collisione venga rilevata (es. `block == true` o cambio direzione successivo).
+- Posizionamento di Pacman e Ghost a distanza ravvicinata.
+- Esecuzione del controllo di collisione.
 
-**Risultato atteso:** Ghost non attraversa il muro e viene attivata la logica di cambio direzione.
+**Risultato atteso:**  
+La collisione deve essere correttamente rilevata.
 
 
-## CT8 – Collisione Pacman–Ghost
 
-**Obiettivo:** verificare che la collisione tra Pacman e Ghost venga rilevata.  
-**Precondizioni:** Pacman e Ghost molto vicini.  
+## CT8 – Determinismo del movimento dei Ghost  
+**Classe di test:** `GhostRandomDeterminismTest`
+
+**Obiettivo:** verificare che il comportamento casuale dei Ghost sia deterministico in fase di test.  
+
 **Azioni:**
-1. Posizionare Ghost e Pacman a distanza minore del raggio di collisione.
-2. Eseguire controllo collisione (`isCollidingWith`).
+- Creazione di Ghost con una sorgente di random controllata.
+- Esecuzione di più step di movimento.
 
-**Risultato atteso:** collisione rilevata (ritorno `true`).
-
-
-## CT9 – Perdita vita e reset round
-
-**Obiettivo:** verificare che dopo collisione Pacman perda una vita e le entità tornino allo spawn.  
-**Precondizioni:** vite iniziali note.  
-**Azioni:**
-1. Forzare una collisione.
-2. Controllare decremento vite.
-3. Controllare che Pacman e Ghost siano tornati alle coordinate di spawn.
-
-**Risultato atteso:** vite decrementate, posizioni resettate correttamente.
+**Risultato atteso:**  
+A parità di seed, il movimento dei Ghost deve essere riproducibile.
 
 
-## CT10 – Game Over e riavvio
 
-**Obiettivo:** verificare il comportamento a vite esaurite e la possibilità di riavviare.  
-**Precondizioni:** vite = 1.  
-**Azioni:**
-1. Forzare collisione per portare vite a 0.
-2. Verificare `gameOver == true`.
-3. Simulare restart (tasto R / chiamata metodo).
-4. Verificare reset completo (vite ripristinate, score azzerato, mappa ripristinata).
-
-**Risultato atteso:** game over attivo, e dopo restart nuova partita correttamente inizializzata.
-
-
-## CT11 – High Score
-
-**Obiettivo:** verificare che l’high score venga aggiornato correttamente e non venga azzerato al restart.  
-**Azioni:**
-1. Ottenere un punteggio e verificare aggiornamento dell’high score.
-2. Eseguire restart della partita.
-3. Verificare che l’high score rimanga invariato.
-
-**Risultato atteso:** high score persistente durante l’esecuzione.
 
 
 
