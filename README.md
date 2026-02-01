@@ -18,7 +18,7 @@ Questo approccio rende il codice leggibile, testabile ed estendibile.
 
 ---
 
-## 🛠 Tecnologie utilizzate
+##  Tecnologie utilizzate
 - **Java SE 8**
 - **Swing**
 - **Maven**
