@@ -25,6 +25,4 @@ Questo approccio rende il codice leggibile, testabile ed estendibile.
 - **JUnit 5**
 - **Git / GitHub**
 
----
 
-## 📂 Struttura del progetto
