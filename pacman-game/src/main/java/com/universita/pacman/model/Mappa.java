@@ -1,4 +1,4 @@
-package com.universita.pacman.pacman_game;
+package com.universita.pacman.model;
 
 import java.io.IOException;
 
@@ -6,6 +6,7 @@ public class Mappa {
 	final int W=1;	//Muro
 	final int F=2;	//Cibo 
 	final int E=3;	//Vuoto
+	final int G=4;
 
 	private final int rows;
 	private final int cols;
@@ -15,6 +16,9 @@ public class Mappa {
 	private final int mapWidth;
     private final double squareHeight;
     private final double squareWidth;
+    
+    private final int[][] originalBoard;
+
 	
 	private int board[][] = {
 			//-----------------------X-----------------------------//
@@ -30,7 +34,7 @@ public class Mappa {
 			{W,W,W,W,W,W,F,W,W,W,W,W,F,W,W,F,W,W,W,W,W,F,W,W,W,W,W,W},
 			{E,E,E,E,E,W,F,W,W,W,W,W,F,W,W,F,W,W,W,W,W,F,W,E,E,E,E,E},
 			{E,E,E,E,E,W,F,W,W,F,F,F,F,F,F,F,F,F,F,W,W,F,W,E,E,E,E,E},
-			{E,E,E,E,E,W,F,W,W,F,W,W,W,W,W,W,W,W,F,W,W,F,W,E,E,E,E,E},
+			{E,E,E,E,E,W,F,W,W,F,W,W,W,E,E,W,W,W,F,W,W,F,W,E,E,E,E,E},
 			{W,W,W,W,W,W,F,W,W,F,W,E,E,E,E,E,E,W,F,W,W,F,W,W,W,W,W,W},
 			{F,F,F,F,F,F,F,F,F,F,W,E,E,E,E,E,E,W,F,F,F,F,F,F,F,F,F,F},
 			{W,W,W,W,W,W,F,W,W,F,W,E,E,E,E,E,E,W,F,W,W,F,W,W,W,W,W,W},
@@ -61,6 +65,15 @@ public class Mappa {
 		squareHeight=tilesize;
 		squareWidth=tilesize;
 		
+		board[12][13] = G;
+		board[12][14] = G;
+		
+		originalBoard = new int[board.length][board[0].length];
+		for (int r = 0; r < board.length; r++) {
+		    System.arraycopy(board[r], 0, originalBoard[r], 0, board[r].length);
+		}
+
+		
 	}
 	public Pacman placePacman() {
 	    int spawnRow = 23;
@@ -71,6 +84,14 @@ public class Mappa {
 	        spawnRow * squareHeight + squareHeight / 2.0
 	    );
 	}
+	
+	
+	public void resetFood() {
+	    for (int r = 0; r < board.length; r++) {
+	        System.arraycopy(originalBoard[r], 0, board[r], 0, board[r].length);
+	    }
+	}
+
 	 
 	public int getMapWidth() {
 		return mapWidth;
@@ -124,5 +145,16 @@ public class Mappa {
 	    }
 	    return board[r][c];
 	}
+	
+	public boolean isClearForPacman(int r, int c) {
+	    if (r < 0 || r >= board.length || c < 0 || c >= board[0].length) return false;
+	    return board[r][c] != W && board[r][c] != G; // Pacman NON passa sul gate
+	}
+
+	public boolean isClearForGhost(int r, int c) {
+	    if (r < 0 || r >= board.length || c < 0 || c >= board[0].length) return false;
+	    return board[r][c] != W; // Ghost passa su tutto tranne muro (quindi anche gate)
+	}
+
 	 
 }

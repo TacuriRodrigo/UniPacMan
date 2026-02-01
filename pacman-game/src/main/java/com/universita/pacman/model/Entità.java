@@ -1,4 +1,4 @@
-package com.universita.pacman.pacman_game;
+package com.universita.pacman.model;
 
 // java.util.Random non è più usato qui, sarà usato in Ghost.java
 // import java.util.Random; 
@@ -32,8 +32,8 @@ public class Entità {
 
         // Assunzione: x,y sono il CENTRO dell'entità.
         // Hitbox leggermente più piccola del tile per evitare incastri grafici.
-        double halfW = tileW * 0.40;
-        double halfH = tileH * 0.40;
+        double halfW = tileW * 0.34;
+        double halfH = tileH * 0.34;
         
      // --- Tunnel wrap (asse X) prima delle collisioni ---
         int rowNow = (int) Math.floor(y / tileH);
@@ -79,13 +79,28 @@ public class Entità {
 
         // Eat food: usa la cella del centro (ok)
         if (this instanceof Pacman) {
-        	int pacCol = (int) Math.floor(x / tileW);
-        	int pacRow = (int) Math.floor(y / tileH);
+            int pacCol = (int) Math.floor(x / tileW);
+            int pacRow = (int) Math.floor(y / tileH);
 
-            mappa.eatFood(pacRow, pacCol);
+            boolean ate = mappa.eatFood(pacRow, pacCol);
+            if (ate) {
+                ((Pacman) this).addScore(10);
+            }
+        }
+
+    }
+
+    private boolean isClearForThisEntity(Mappa mappa, int row, int col) {
+        if (this instanceof Pacman) {
+            return mappa.isClearForPacman(row, col);
+        } else if (this instanceof Ghost) {
+            return mappa.isClearForGhost(row, col);
+        } else {
+            return mappa.isClear(row, col); // fallback
         }
     }
 
+    
     private boolean collidesWithWall(
             double cx, double cy,
             double halfW, double halfH,
@@ -106,11 +121,10 @@ public class Entità {
 
         // Se qualunque cella toccata è muro -> collisione
         // isClear(row, col) => true se non muro
-        if (!mappa.isClear(topRow, leftCol)) return true;
-        if (!mappa.isClear(topRow, rightCol)) return true;
-        if (!mappa.isClear(bottomRow, leftCol)) return true;
-        if (!mappa.isClear(bottomRow, rightCol)) return true;
-
+        if (!isClearForThisEntity(mappa, topRow, leftCol)) return true;
+        if (!isClearForThisEntity(mappa, topRow, rightCol)) return true;
+        if (!isClearForThisEntity(mappa, bottomRow, leftCol)) return true;
+        if (!isClearForThisEntity(mappa, bottomRow, rightCol)) return true;
         return false;
     }
 
