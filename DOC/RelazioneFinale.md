@@ -270,17 +270,29 @@ Nel complesso, il progetto soddisfa i principali criteri di qualità operativa r
 
 ## 4. Design
 
-- **Modelling**
+## **Modelling**
 
-### 4.1 Use Case Diagram
+### 4.1 Use Case Diagramm
 
 
 <img width="1345" height="420" alt="UseCaseClass" src="https://github.com/user-attachments/assets/d706ca9c-c84a-42e0-a2af-262af23f21ef" />
 
-### 4.2 Struttura dei Package
+### 4.2 Class Diagramm
+
+<img width="1916" height="808" alt="ClassDiagram" src="https://github.com/user-attachments/assets/14e22b92-fa09-4c4a-b1ba-08f584c3a70c" />
+
+### 4.3 Diagramma delle attività
+
+<img width="207" height="872" alt="DiagrammaAttività" src="https://github.com/user-attachments/assets/c870496b-5105-4404-860f-5b903e0e1ff9" />
+
+### 4.4 Sequence Diagramm
+
+<img width="635" height="866" alt="DiagrammaSequenza" src="https://github.com/user-attachments/assets/cb30ec30-20ba-4fbd-a917-f00137394b64" />
 
 
-### 4.3 Scelte Progettuali Principali
+### 4.3 Macchina a stati
+
+<img width="526" height="865" alt="MacchinaStati" src="https://github.com/user-attachments/assets/4232428e-126b-4ec5-8ef8-03f8c1a391ed" />
 
 
 ---
