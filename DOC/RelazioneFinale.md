@@ -270,10 +270,12 @@ Nel complesso, il progetto soddisfa i principali criteri di qualità operativa r
 
 ## 4. Design
 
-In questa sezione viene descritta la progettazione del sistema.
+- **Modelling**
 
-### 4.1 Architettura del Sistema
+### 4.1 Use Case Diagram
 
+
+<img width="1345" height="420" alt="UseCaseClass" src="https://github.com/user-attachments/assets/d706ca9c-c84a-42e0-a2af-262af23f21ef" />
 
 ### 4.2 Struttura dei Package
 
