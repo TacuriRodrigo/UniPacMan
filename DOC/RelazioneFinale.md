@@ -294,6 +294,114 @@ Nel complesso, il progetto soddisfa i principali criteri di qualità operativa r
 
 <img width="526" height="865" alt="MacchinaStati" src="https://github.com/user-attachments/assets/4232428e-126b-4ec5-8ef8-03f8c1a391ed" />
 
+### 4.4 Architectural Views
+
+L’architettura del progetto UNIPACMAN è stata descritta adottando un approccio ispirato al **modello 4+1 di Kruchten**, che permette di analizzare il sistema da più punti di vista complementari.
+
+In particolare, il sistema è stato progettato come un’applicazione **monolitica a livelli**, con una chiara separazione tra:
+- **logica di dominio (model)**
+- **interfaccia grafica (view)**
+
+Questa separazione consente di isolare le responsabilità principali del sistema, migliorando manutenibilità, testabilità ed estendibilità.
+
+Le viste architetturali adottate sono:
+- Logical View
+- Development View
+- Process View
+- Physical View
+
+Le sezioni seguenti descrivono ciascuna vista in relazione al progetto.
+
+---
+
+### 4.5 Logical View
+
+La **Logical View** descrive la struttura funzionale del sistema e le relazioni tra i principali componenti software.
+
+Nel progetto UNIPACMAN la Logical View è organizzata secondo un’architettura **Model–View**, in cui:
+
+- Il **Model** contiene la logica del gioco ed è indipendente dalla grafica.
+- La **View** si occupa della rappresentazione grafica e dell’interazione con l’utente.
+
+#### Model
+Il package `model` include le classi:
+- `Entità`: superclasse che incapsula movimento e collisioni
+- `Pacman` e `Ghost`: specializzazioni di Entità
+- `Mappa`: rappresentazione tile-based del livello
+
+Il model implementa tutte le regole del gioco ed è completamente testabile tramite JUnit, senza dipendenze dalla UI.
+
+#### View
+Il package `view` include:
+- `GamePanel`: rendering, input, game loop e gestione degli stati
+- `GameFrame`: finestra principale
+- `HomePanel`: schermata iniziale
+
+#### Design Pattern Utilizzati
+- **Template Method**: `Entità.move()` definisce la struttura del movimento, specializzata da Pacman e Ghost.
+- **Strategy (semplificata)**: comportamento di movimento differenziato tra Pacman e Ghost.
+- **Separation of Concerns**: netta separazione tra logica e presentazione.
+
+Questa organizzazione rende il sistema modulare e facilmente estendibile.
+
+---
+
+### 4.6 Development View
+
+La **Development View** descrive l’organizzazione del codice e dell’ambiente di sviluppo.
+
+Il progetto è strutturato come progetto **Maven**, con la seguente suddivisione:
+
+<img width="355" height="240" alt="image" src="https://github.com/user-attachments/assets/e5b7bf78-5f04-4bd3-b302-95011f897cab" />
+
+
+Questa struttura consente:
+- separazione tra codice di produzione e test
+- caricamento automatico delle risorse
+- build riproducibili tramite Maven
+
+Lo sviluppo è stato effettuato con **Eclipse**, mentre **Git/GitHub** sono stati utilizzati per il versionamento e la gestione delle modifiche.
+
+---
+
+### 4.7 Process View
+
+La **Process View** descrive il comportamento dinamico del sistema durante l’esecuzione.
+
+UNIPACMAN è un’applicazione **single-threaded** dal punto di vista logico, basata sull’**Event Dispatch Thread (EDT)** di Swing.
+
+Il ciclo di esecuzione principale è gestito da:
+- un **javax.swing.Timer** che funge da game loop (~60 FPS)
+
+Ad ogni tick del Timer:
+1. viene aggiornata la logica (Pacman e Ghost)
+2. vengono gestite le collisioni
+3. viene aggiornato lo stato del gioco (vite, punteggio, game over)
+4. viene richiesto il ridisegno della scena (`repaint()`)
+
+L’assenza di thread aggiuntivi semplifica il design e riduce il rischio di race condition, mantenendo il comportamento deterministico.
+
+---
+
+### 4.8 Physical View
+
+La **Physical View** descrive la distribuzione fisica del sistema.
+
+Il progetto UNIPACMAN è distribuito come:
+- applicazione Java desktop
+- eseguibile su qualsiasi sistema dotato di **Java Virtual Machine**
+
+Non sono richieste dipendenze esterne né componenti server-side.  
+Le risorse grafiche sono incluse nel classpath dell’applicazione.
+
+Questa configurazione rende il sistema:
+- facilmente distribuibile
+- indipendente dalla piattaforma
+- semplice da eseguire in ambiente universitario
+
+
+
+
 
 ---
 
