@@ -312,7 +312,6 @@ Le viste architetturali adottate sono:
 
 Le sezioni seguenti descrivono ciascuna vista in relazione al progetto.
 
----
 
 ### 4.5 Logical View
 
@@ -344,7 +343,6 @@ Il package `view` include:
 
 Questa organizzazione rende il sistema modulare e facilmente estendibile.
 
----
 
 ### 4.6 Development View
 
@@ -362,7 +360,6 @@ Questa struttura consente:
 
 Lo sviluppo è stato effettuato con **Eclipse**, mentre **Git/GitHub** sono stati utilizzati per il versionamento e la gestione delle modifiche.
 
----
 
 ### 4.7 Process View
 
@@ -381,7 +378,6 @@ Ad ogni tick del Timer:
 
 L’assenza di thread aggiuntivi semplifica il design e riduce il rischio di race condition, mantenendo il comportamento deterministico.
 
----
 
 ### 4.8 Physical View
 
@@ -401,21 +397,118 @@ Questa configurazione rende il sistema:
 
 
 
-
-
 ---
 
-## 5. Testing
+## 5. Testing e Validazione
 
-In questa sezione viene descritta la strategia di testing adottata.
+Il testing ha avuto un ruolo centrale nello sviluppo del progetto UNIPACMAN, sia come strumento di verifica della correttezza della logica di gioco, sia come supporto al miglioramento progressivo dell’architettura.
 
-### 5.1 Strategia di Test
-
-
-### 5.2 Casi di Test Implementati
+Durante lo sviluppo non è stata adottata una fase di testing finale isolata, ma un approccio **incrementale**, in cui ogni funzionalità significativa veniva accompagnata da test di verifica prima di procedere allo step successivo.
 
 
-### 5.3 Risultati dei Test
+### 5.1 Strategia di Testing
+
+La strategia di testing adottata è stata principalmente basata su:
+
+- **Unit Testing** tramite JUnit
+- **Test di regressione** per verificare che le modifiche non introducessero nuovi errori
+- **Test manuali** tramite esecuzione dell’applicazione per validare il comportamento visivo e l’esperienza utente
+
+Il focus principale è stato posto sulla **logica del gioco (model)**, in quanto rappresenta la parte più critica e complessa del sistema.
+
+
+### 5.2 Test Implementati
+
+Sono stati implementati diversi test automatici, tra cui:
+
+- **PacmanSpawnTest**  
+  Verifica che Pacman venga inizializzato in una cella valida e attraversabile, evitando spawn all’interno dei muri.
+
+- **GhostWallCollisionTest**  
+  Verifica che i fantasmi non attraversino i muri e che reagiscano correttamente alle collisioni cambiando direzione.
+
+- **TunnelTest**  
+  Verifica il corretto funzionamento del tunnel laterale, assicurando che Pacman venga teletrasportato da un lato all’altro della mappa senza errori di posizione.
+
+- **EatFoodTest**  
+  Verifica che il cibo venga rimosso correttamente dalla mappa quando Pacman passa sopra una cella contenente food.
+
+- **GhostRandomDeterminismTest**  
+  Verifica il comportamento deterministico dei fantasmi in fase di test tramite l’iniezione di un oggetto Random controllato.
+
+Questi test hanno permesso di individuare rapidamente errori logici e di validare le correzioni applicate.
+
+
+### 5.3 Problemi Riscontrati e Soluzioni Adottate
+
+Durante lo sviluppo sono emerse diverse problematiche significative, che hanno portato a miglioramenti sostanziali dell’implementazione.
+
+#### 5.3.1 Logica iniziale di movimento errata
+
+Nelle prime versioni del progetto, la logica di movimento era basata esclusivamente sul controllo della cella centrale dell’entità.  
+Questo approccio portava a comportamenti errati, come:
+- attraversamento parziale dei muri
+- blocchi improvvisi al centro delle pareti
+- comportamento incoerente agli angoli
+
+**Soluzione:**  
+La logica è stata riprogettata introducendo:
+- una hitbox centrata sull’entità
+- controllo sui quattro angoli della hitbox
+- separazione del movimento sugli assi X e Y
+
+Questa modifica ha reso il movimento molto più stabile e realistico.
+
+
+#### 5.3.2 Fenomeno del “passare tra i muri”
+
+Un problema rilevante riguardava il passaggio di Pacman in corridoi stretti:  
+l’entità riusciva a entrare solo se perfettamente allineata al centro del corridoio, rendendo il controllo frustrante.
+
+**Soluzione:**  
+È stato introdotto un meccanismo di **turn assist / snap to grid**, che corregge leggermente la posizione di Pacman quando tenta di svoltare in presenza di una strada valida.  
+Questo migliora sensibilmente l’usabilità senza compromettere la correttezza logica.
+
+
+#### 5.3.3 Gestione del tunnel laterale
+
+L’implementazione iniziale del tunnel era basata su controlli di cella dopo il movimento, causando test falliti e posizionamenti errati.
+
+**Soluzione:**  
+Il wrap del tunnel è stato spostato **prima delle collisioni**, verificando la riga del tunnel e le coordinate pixel dell’entità.  
+Questa soluzione ha reso il comportamento stabile e coerente con i test automatici.
+
+
+#### 5.3.4 Testabilità del comportamento dei Ghost
+
+L’uso diretto di `new Random()` all’interno dei Ghost rendeva il comportamento non deterministico e difficile da testare.
+
+**Soluzione:**  
+È stata introdotta l’**iniezione del Random tramite costruttore**, permettendo di controllare il comportamento nei test senza alterare la logica di gioco reale.
+
+
+### 5.4 Test di Integrazione e Verifica Manuale
+
+Oltre ai test automatici, sono stati effettuati test manuali per verificare:
+
+- corretto rendering della mappa
+- sincronizzazione tra logica e grafica
+- comportamento dei Ghost nella ghost house
+- gestione del Game Over e del restart
+- risposta ai comandi da tastiera
+
+Questi test hanno confermato la correttezza dell’integrazione tra Model e View.
+
+
+### 5.5 Considerazioni Finali sul Testing
+
+Il processo di testing ha contribuito in modo determinante a:
+- migliorare la qualità del codice
+- individuare errori architetturali nelle prime fasi
+- rendere il sistema più robusto e manutenibile
+
+In particolare, il passaggio da una logica iniziale semplificata a una logica basata su collisioni reali dimostra l’importanza del testing come strumento di progettazione e non solo di verifica finale.
+
 
 
 ---
