@@ -91,7 +91,6 @@ public class Mappa {
 	        System.arraycopy(originalBoard[r], 0, board[r], 0, board[r].length);
 	    }
 	}
-
 	 
 	public int getMapWidth() {
 		return mapWidth;

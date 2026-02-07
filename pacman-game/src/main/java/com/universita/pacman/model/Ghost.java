@@ -140,7 +140,7 @@ public class Ghost extends Entità {
             deltaX = 0; deltaY = -1;
         }
         
-        // La chiamata a super.move() è stata RIMOSSA anche da qui
+
     }
     
     void moveWithoutAI(Mappa mappa) {

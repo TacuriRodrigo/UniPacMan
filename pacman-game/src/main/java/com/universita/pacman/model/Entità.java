@@ -129,21 +129,14 @@ public class Entità {
     }
 
 
-    /**
-     * CORREZIONE 1: La firma deve accettare int.
-     * Questo è il metodo "base" per Entita (non fa nulla).
-     * Sarà sovrascritto da Ghost.
-     */
+
     
     
     protected boolean outOfRange(int gridX, int gridY) {
         return false;
     }
 
-    /**
-     * CORREZIONE 2: La firma è cambiata per passare la mappa (per le coordinate di teletrasporto)
-     * CORREZIONE 3: Il corpo del metodo ora usa i parametri gridX e gridY, NON Xi.
-     */
+
     
     /*
     private boolean warmAll(int gridX, int gridY, Mappa mappa) {
