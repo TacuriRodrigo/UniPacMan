@@ -148,7 +148,6 @@ L’approccio adottato ha previsto:
 - frequenti revisioni del codice
 - correzioni e miglioramenti continui sulla base del feedback ricevuto
 
----
 
 ### 2.2 Organizzazione del Progetto
 
@@ -159,7 +158,6 @@ Il collaboratore esterno ha effettuato revisioni del codice quando possibile, fo
 
 Questo approccio ha consentito di adattare lo sviluppo alle reali disponibilità temporali, mantenendo comunque una buona qualità complessiva del progetto.
 
----
 
 ### 2.3 Differenze rispetto al Project Plan Iniziale
 
@@ -171,7 +169,7 @@ In particolare, non è stato possibile seguire rigidamente la pianificazione pre
 
 In questi momenti, il supporto del collaboratore esterno è risultato fondamentale per superare le criticità e individuare soluzioni adeguate, consentendo comunque il completamento del progetto entro i tempi previsti.
 
----
+
 
 ### 2.4 Configuration Management
 
@@ -185,7 +183,7 @@ La gestione della configurazione del progetto è stata effettuata utilizzando:
 Il repository GitHub ha permesso di tenere traccia delle modifiche al codice, facilitando il controllo delle versioni e la gestione delle evoluzioni del progetto.  
 Maven ha garantito una configurazione stabile e riproducibile dell’ambiente di sviluppo.
 
----
+
 
 ### 2.5 People Management and Team Organization
 
@@ -218,7 +216,7 @@ Per la prioritizzazione dei requisiti è stato adottato il metodo **MoSCoW**, ch
 
 Questa classificazione ha guidato le decisioni durante lo sviluppo, consentendo di completare prima le funzionalità indispensabili.
 
----
+
 
 ### 3.2 Requisiti Funzionali e Non Funzionali
 
@@ -239,7 +237,7 @@ I requisiti non funzionali definiscono invece i vincoli qualitativi del sistema,
 
 Il dettaglio completo dei requisiti funzionali e non funzionali è descritto nel documento **SpecificaRequisiti.md**.
 
----
+
 
 ### 3.3 Operational Quality
 
@@ -513,21 +511,24 @@ In particolare, il passaggio da una logica iniziale semplificata a una logica ba
 
 ---
 
-## 6. Maintenance
+## 6. Maintenance ed Evoluzione del Sistema
 
-In questa sezione vengono descritti gli aspetti legati alla manutenzione del software.
+Il progetto UNIPACMAN è stato progettato seguendo principi di modularità e separazione delle responsabilità, al fine di facilitare la manutenzione e l’evoluzione futura del software.
 
-### 6.1 Manutenibilità del Codice
+L’adozione di una architettura Model–View ha permesso di isolare la logica del gioco dalla rappresentazione grafica. Questo consente di modificare o estendere la parte grafica senza alterare la logica, e viceversa. Ad esempio, è possibile sostituire la libreria grafica o migliorare il rendering senza modificare le classi del model.
 
+La struttura basata su classi ben definite, come Entità, Pacman, Ghost e Mappa, consente inoltre di estendere facilmente il sistema. Ad esempio, è possibile aggiungere nuovi tipi di nemici creando nuove classi che estendono Entità, oppure implementare nuove meccaniche di gioco senza modificare il codice esistente.
 
-### 6.2 Estendibilità del Sistema
+L’utilizzo di test unitari contribuisce ulteriormente alla manutenibilità del sistema, permettendo di verificare rapidamente che modifiche future non introducano regressioni o errori nella logica esistente.
 
+Il versionamento tramite Git e GitHub consente di tracciare tutte le modifiche al codice, facilitando il controllo delle versioni e il ripristino di versioni precedenti in caso di problemi.
 
-### 6.3 Limitazioni Attuali
+Possibili evoluzioni future del sistema includono:
+- implementazione di una intelligenza artificiale più avanzata per i Ghost
+- aggiunta di livelli multipli
+- introduzione di nuovi elementi di gioco
+- miglioramento dell’architettura verso un pattern completo Model–View–Controller
+- ottimizzazione delle prestazioni e del rendering grafico
 
-
----
-
-## Conclusioni
-
+Grazie alla struttura modulare e alle scelte architetturali adottate, il sistema risulta facilmente manutenibile, estendibile e adattabile a future evoluzioni.
 
