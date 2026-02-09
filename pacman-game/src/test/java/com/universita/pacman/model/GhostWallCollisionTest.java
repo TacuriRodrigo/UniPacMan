@@ -15,7 +15,7 @@ public class GhostWallCollisionTest {
         @Override
         public void move(Mappa mappa) {
             // NON chiamare randomMove
-            super.move(mappa); // <-- attenzione: questo richiamerebbe Ghost.move
+            super.move(mappa); 
         }
     }
     
@@ -35,7 +35,7 @@ public class GhostWallCollisionTest {
 
         g.moveWithoutAI(m);
 
-        assertEquals(x0, g.getX(), 1e-9);
+        assertEquals(x0, g.getX(), 1e-9); //confronto con tolleranza
         assertEquals(y0, g.getY(), 1e-9);
     }
 
